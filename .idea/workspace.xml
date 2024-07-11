@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a5b01b12-dd3a-41e0-9c32-f7c7fd7d4c76" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/TestaCliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestaCliente.java" afterDir="false" />
     </list>
@@ -61,31 +60,44 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Gradle.TestaCliente.atualizarCliente.executor": "Run",
     "Gradle.TestaCliente.cadastraCliente.executor": "Run",
+    "Gradle.TestaCliente.deletarCliente.executor": "Run",
     "Gradle.TestaCliente.pegaTodosClientes.executor": "Run",
     "Gradle.ctg-framework [:Main.main()].executor": "Run",
     "Gradle.ctg-framework [dependencies].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "testeDelete",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/lucas/Desktop/CTG - Comunidade Tester Global/Pratica - Testes de API/api-clientes-exemplo-microservico",
     "onboarding.tips.debug.path": "C:/Users/lucas/Desktop/CTG - Comunidade Tester Global/Pratica - Testes de API/automacao-api/ctg-framework/src/main/java/org/example/Main.java"
   }
 }]]></component>
-  <component name="RunManager" selected="Gradle.TestaCliente.cadastraCliente">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.example.Main" />
-      <module name="ctg-framework.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+  <component name="RunManager" selected="Gradle.TestaCliente.deletarCliente">
+    <configuration name="TestaCliente.atualizarCliente" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;TestaCliente.atualizarCliente&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
     </configuration>
     <configuration name="TestaCliente.cadastraCliente" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -101,6 +113,30 @@
             <option value=":test" />
             <option value="--tests" />
             <option value="&quot;TestaCliente.cadastraCliente&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="TestaCliente.deletarCliente" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;TestaCliente.deletarCliente&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -159,10 +195,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.TestaCliente.deletarCliente" />
+        <item itemvalue="Gradle.TestaCliente.atualizarCliente" />
         <item itemvalue="Gradle.TestaCliente.cadastraCliente" />
         <item itemvalue="Gradle.TestaCliente.pegaTodosClientes" />
         <item itemvalue="Gradle.ctg-framework [dependencies]" />
-        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>

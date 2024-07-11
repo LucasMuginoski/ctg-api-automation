@@ -46,4 +46,35 @@ public class TestaCliente {
 
     }
 
+    @Test
+    @DisplayName("Quando envio novos dados para o usuario cadastrado, então ele deve ser atualizado.")
+    public void atualizarCliente () {
+        String clienteParaAtualizar = "{\n" +
+                "  \"id\": \"4055696\",\n" +
+                "  \"idade\": 27,\n" +
+                "  \"nome\": \"Mickey Mouse\",\n" +
+                "  \"risco\": 0\n" +
+                "}";
+
+        String respostaAtualizada = "{\"4055696\":{\"nome\":\"Mickey Mouse\",\"idade\":27,\"id\":4055696,\"risco\":0}}";
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(clienteParaAtualizar)
+                .when().put(enderecoAPICliente+endpointCliente)
+                .then().statusCode(200).body(containsString(respostaAtualizada));
+
+    }
+    @Test
+    @DisplayName("Quando envio um DELETE para o usuario 4055696, entao ele deve ser removido. ")
+    public void deletarCliente () {
+        String clienteParaDeletar = "/4055696"; //clientID
+        String respostaDelecao = "CLIENTE REMOVIDO: { NOME: Mickey Mouse, IDADE: 27, ID: 4055696 }";
+
+        given()
+                .contentType(ContentType.JSON)
+                .when().delete(enderecoAPICliente+endpointCliente+clienteParaDeletar)
+                .then().statusCode(200).body(containsString(respostaDelecao));
+    }
+
 }
