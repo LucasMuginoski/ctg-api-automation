@@ -91,9 +91,26 @@ public class TestaCliente {
     @Test
     @DisplayName("Quando envio um DELETE para o usuario 10029, entao ele deve ser removido por ID.")
     public void deletarCliente () {
+        String clienteParaCadastrar = "{\n" +
+                "  \"id\": \"10029\",\n" +
+                "  \"idade\": 27,\n" +
+                "  \"nome\": \"Mickey Mouse\",\n" +
+                "  \"risco\": 0\n" +
+                "}";
+
         String clienteParaDeletar = "/10029"; //clientID
         String respostaDelecao = "CLIENTE REMOVIDO: { NOME: Mickey Mouse, IDADE: 27, ID: 10029 }";
 
+        //Cadastra + Delete
+        //Apenas cadastra o novo cliente
+        given()
+                .contentType(ContentType.JSON)
+                .body(clienteParaCadastrar)
+                .when()
+                .post(enderecoAPICliente+endpointCliente)
+                .then().statusCode(201);
+
+        // Faz o delete
         given()
                 .contentType(ContentType.JSON)
         .when()
