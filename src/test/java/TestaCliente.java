@@ -12,69 +12,95 @@ public class TestaCliente {
     String endpointCliente = "cliente";
 
     @Test
-    @DisplayName("Quando pegar todos os clientes sem cadastrar clientes, então a lista deve estar vazia.")
+    @DisplayName("Quando pegar todos os clientes sem cadastrar clientes, entao a lista deve estar vazia.")
     public void pegaTodosClientes () {
 
         String respostaEsperada = "{}";
 
         given()
-                    .contentType(ContentType.JSON)
-                .when()
-                    .get(enderecoAPICliente)
-                .then()
-                    .statusCode(200)
-                    .assertThat().body(new IsEqual<>(respostaEsperada));
+                .contentType(ContentType.JSON)
+        .when()
+                .get(enderecoAPICliente)
+        .then()
+                .statusCode(200)
+                .assertThat().body(new IsEqual<>(respostaEsperada));
     }
 
     @Test
-    @DisplayName("Quando cadastrar novo cliente, então ele deve estar disponível no resultado")
+    @DisplayName("Quando cadastrar novo cliente, entao ele deve estar disponível no resultado")
     public void cadastraCliente () {
 
         String clienteParaCadastrar = "{\n" +
-                "  \"id\": \"4055696\",\n" +
+                "  \"id\": \"10029\",\n" +
                 "  \"idade\": 27,\n" +
                 "  \"nome\": \"Mickey Mouse\",\n" +
                 "  \"risco\": 0\n" +
                 "}";
 
-        String respostaEsperada = "{\"4055696\":{\"nome\":\"Mickey Mouse\",\"idade\":27,\"id\":4055696,\"risco\":0}}";
+        String respostaEsperada = "{\"10029\":{\"nome\":\"Mickey Mouse\",\"idade\":27,\"id\":10029,\"risco\":0}}";
 
-        given().contentType(ContentType.JSON)
+        given()
+                .contentType(ContentType.JSON)
                 .body(clienteParaCadastrar)
-                .when().post(enderecoAPICliente+endpointCliente)
-                .then().statusCode(201).body(containsString(respostaEsperada));
+        .when()
+                .post(enderecoAPICliente+endpointCliente)
+        .then()
+                .statusCode(201).body(containsString(respostaEsperada));
 
     }
 
     @Test
-    @DisplayName("Quando envio novos dados para o usuario cadastrado, então ele deve ser atualizado.")
-    public void atualizarCliente () {
-        String clienteParaAtualizar = "{\n" +
-                "  \"id\": \"4055696\",\n" +
+    @DisplayName("Quando envio novos dados para o cliente, entao ele deve ser atualizado.")
+    public void atualizaCliente () {
+
+        String clienteParaCadastrar = "{\n" +
+                "  \"id\": \"10029\",\n" +
                 "  \"idade\": 27,\n" +
                 "  \"nome\": \"Mickey Mouse\",\n" +
                 "  \"risco\": 0\n" +
                 "}";
 
-        String respostaAtualizada = "{\"4055696\":{\"nome\":\"Mickey Mouse\",\"idade\":27,\"id\":4055696,\"risco\":0}}";
+        String clienteAtualizado = "{\n" +
+                "  \"id\": \"10029\",\n" +
+                "  \"idade\": 28,\n" +
+                "  \"nome\": \"Mickey Mouse\",\n" +
+                "  \"risco\": 0\n" +
+                "}";
 
+        String respostaEsperada = "{\"10029\":{\"nome\":\"Mickey Mouse\",\"idade\":28,\"id\":10029,\"risco\":0}}";
+
+        //Apenas cadastra o novo cliente
         given()
                 .contentType(ContentType.JSON)
-                .body(clienteParaAtualizar)
-                .when().put(enderecoAPICliente+endpointCliente)
-                .then().statusCode(200).body(containsString(respostaAtualizada));
+                .body(clienteParaCadastrar)
+        .when()
+                .post(enderecoAPICliente+endpointCliente)
+        .then().statusCode(201);
+
+        //Atualizar o novo cliente
+        given()
+                .contentType(ContentType.JSON)
+                .body(clienteAtualizado)
+        .when()
+                .put(enderecoAPICliente+endpointCliente)
+        .then()
+                .statusCode(200).body(containsString(respostaEsperada));
+
 
     }
     @Test
-    @DisplayName("Quando envio um DELETE para o usuario 4055696, entao ele deve ser removido. ")
+    @DisplayName("Quando envio um DELETE para o usuario 10029, entao ele deve ser removido por ID.")
     public void deletarCliente () {
-        String clienteParaDeletar = "/4055696"; //clientID
-        String respostaDelecao = "CLIENTE REMOVIDO: { NOME: Mickey Mouse, IDADE: 27, ID: 4055696 }";
+        String clienteParaDeletar = "/10029"; //clientID
+        String respostaDelecao = "CLIENTE REMOVIDO: { NOME: Mickey Mouse, IDADE: 27, ID: 10029 }";
 
         given()
                 .contentType(ContentType.JSON)
-                .when().delete(enderecoAPICliente+endpointCliente+clienteParaDeletar)
-                .then().statusCode(200).body(containsString(respostaDelecao));
+        .when()
+                .delete(enderecoAPICliente+endpointCliente+clienteParaDeletar)
+        .then()
+                .statusCode(200)
+                .body(containsString(respostaDelecao));
     }
 
 }
