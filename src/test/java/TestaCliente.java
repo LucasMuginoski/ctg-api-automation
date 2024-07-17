@@ -19,9 +19,9 @@ public class TestaCliente {
 
         given()
                 .contentType(ContentType.JSON)
-        .when()
+                .when()
                 .get(enderecoAPICliente)
-        .then()
+                .then()
                 .statusCode(200)
                 .assertThat().body(new IsEqual<>(respostaEsperada));
     }
@@ -42,9 +42,9 @@ public class TestaCliente {
         given()
                 .contentType(ContentType.JSON)
                 .body(clienteParaCadastrar)
-        .when()
+                .when()
                 .post(enderecoAPICliente+endpointCliente)
-        .then()
+                .then()
                 .statusCode(201).body(containsString(respostaEsperada));
 
     }
@@ -73,17 +73,17 @@ public class TestaCliente {
         given()
                 .contentType(ContentType.JSON)
                 .body(clienteParaCadastrar)
-        .when()
+                .when()
                 .post(enderecoAPICliente+endpointCliente)
-        .then().statusCode(201);
+                .then().statusCode(201);
 
         //Atualizar o novo cliente
         given()
                 .contentType(ContentType.JSON)
                 .body(clienteAtualizado)
-        .when()
+                .when()
                 .put(enderecoAPICliente+endpointCliente)
-        .then()
+                .then()
                 .statusCode(200).body(containsString(respostaEsperada));
 
 
@@ -113,9 +113,9 @@ public class TestaCliente {
         // Faz o delete
         given()
                 .contentType(ContentType.JSON)
-        .when()
+                .when()
                 .delete(enderecoAPICliente+endpointCliente+clienteParaDeletar)
-        .then()
+                .then()
                 .statusCode(200)
                 .body(containsString(respostaDelecao));
     }
