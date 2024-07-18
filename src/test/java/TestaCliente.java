@@ -1,51 +1,60 @@
 import io.restassured.http.ContentType;
+import org.apache.http.HttpStatus;
 import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.sql.ClientInfoStatus;
+
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.*;
 
 public class TestaCliente {
 
-    String enderecoAPICliente = "http://localhost:8080/";
-    String endpointCliente = "cliente";
+    private String servicoAPI = "http://localhost:8080";
+    private String recursoCliente = "/cliente";
+    private String apagaTodos = "/apagaTodos";
+    private static final String listaClientesVazia = "{}";
 
     @Test
     @DisplayName("Quando pegar todos os clientes sem cadastrar clientes, entao a lista deve estar vazia.")
     public void pegaTodosClientes () {
 
-        String respostaEsperada = "{}";
+        apagaTodosClientesDoServidor();
 
         given()
                 .contentType(ContentType.JSON)
-                .when()
-                .get(enderecoAPICliente)
-                .then()
-                .statusCode(200)
-                .assertThat().body(new IsEqual<>(respostaEsperada));
+        .when()
+                .get(servicoAPI)
+        .then()
+                .statusCode(HttpStatus.SC_OK)
+                .assertThat().body(new IsEqual<>(listaClientesVazia));
     }
 
     @Test
     @DisplayName("Quando cadastrar novo cliente, entao ele deve estar disponível no resultado")
     public void cadastraCliente () {
 
-        String clienteParaCadastrar = "{\n" +
-                "  \"id\": \"10029\",\n" +
-                "  \"idade\": 27,\n" +
-                "  \"nome\": \"Mickey Mouse\",\n" +
-                "  \"risco\": 0\n" +
-                "}";
+        apagaTodosClientesDoServidor();
+        Cliente clienteParaCadastrar = new Cliente();
 
-        String respostaEsperada = "{\"10029\":{\"nome\":\"Mickey Mouse\",\"idade\":27,\"id\":10029,\"risco\":0}}";
+        clienteParaCadastrar.setId("10029");
+        clienteParaCadastrar.setNome("Lucas");
+        clienteParaCadastrar.setIdade(28);
+        clienteParaCadastrar.getRisco(0);
+
 
         given()
                 .contentType(ContentType.JSON)
                 .body(clienteParaCadastrar)
-                .when()
-                .post(enderecoAPICliente+endpointCliente)
-                .then()
-                .statusCode(201).body(containsString(respostaEsperada));
+        .when()
+                .post(servicoAPI+recursoCliente)
+        .then()
+                .statusCode(HttpStatus.SC_CREATED)
+                .body("10029.nome", equalTo("Lucas"))
+                .body("10029.idade", equalTo(28))
+                .body("10029.id", equalTo(10029))
+                .body("10029.risco", equalTo(0));
 
     }
 
@@ -53,71 +62,87 @@ public class TestaCliente {
     @DisplayName("Quando envio novos dados para o cliente, entao ele deve ser atualizado.")
     public void atualizaCliente () {
 
-        String clienteParaCadastrar = "{\n" +
-                "  \"id\": \"10029\",\n" +
-                "  \"idade\": 27,\n" +
-                "  \"nome\": \"Mickey Mouse\",\n" +
-                "  \"risco\": 0\n" +
-                "}";
+        Cliente clienteParaCadastrar = new Cliente();
 
-        String clienteAtualizado = "{\n" +
-                "  \"id\": \"10029\",\n" +
-                "  \"idade\": 28,\n" +
-                "  \"nome\": \"Mickey Mouse\",\n" +
-                "  \"risco\": 0\n" +
-                "}";
+        clienteParaCadastrar.setNome("Mickey");
+        clienteParaCadastrar.setIdade(67);
+        clienteParaCadastrar.setId("40101");
 
-        String respostaEsperada = "{\"10029\":{\"nome\":\"Mickey Mouse\",\"idade\":28,\"id\":10029,\"risco\":0}}";
+        Cliente clienteAtualizado = new Cliente();
+        clienteAtualizado.setNome("Mickey, Mouse");
+        clienteAtualizado.setIdade(85);
+        clienteAtualizado.setId("40101");
+
 
         //Apenas cadastra o novo cliente
         given()
                 .contentType(ContentType.JSON)
                 .body(clienteParaCadastrar)
-                .when()
-                .post(enderecoAPICliente+endpointCliente)
-                .then().statusCode(201);
+        .when()
+                .post(servicoAPI+recursoCliente)
+         .then()
+                .statusCode(HttpStatus.SC_CREATED);
 
         //Atualizar o novo cliente
         given()
                 .contentType(ContentType.JSON)
                 .body(clienteAtualizado)
-                .when()
-                .put(enderecoAPICliente+endpointCliente)
-                .then()
-                .statusCode(200).body(containsString(respostaEsperada));
+        .when()
+                .put(servicoAPI+recursoCliente)
+        .then()
+                .statusCode(HttpStatus.SC_OK)
+                .assertThat()
+                .body("40101.id", equalTo(40101))
+                .body("40101.nome", equalTo("Mickey, Mouse"))
+                .body("40101.idade", equalTo(85));
 
 
     }
+
     @Test
     @DisplayName("Quando envio um DELETE para o usuario 10029, entao ele deve ser removido por ID.")
     public void deletarCliente () {
-        String clienteParaCadastrar = "{\n" +
-                "  \"id\": \"10029\",\n" +
-                "  \"idade\": 27,\n" +
-                "  \"nome\": \"Mickey Mouse\",\n" +
-                "  \"risco\": 0\n" +
-                "}";
 
-        String clienteParaDeletar = "/10029"; //clientID
-        String respostaDelecao = "CLIENTE REMOVIDO: { NOME: Mickey Mouse, IDADE: 27, ID: 10029 }";
+        //garantir q não existe lixo no servidor
+        apagaTodosClientesDoServidor();
 
-        //Cadastra + Delete
-        //Apenas cadastra o novo cliente
+        Cliente clienteParaCadastrar = new Cliente();
+
+        clienteParaCadastrar.setNome("Tio Patinhas");
+        clienteParaCadastrar.setIdade(89);
+        clienteParaCadastrar.setId("40102");
+
+        //Cria usuário para testar a deleção
         given()
                 .contentType(ContentType.JSON)
                 .body(clienteParaCadastrar)
-                .when()
-                .post(enderecoAPICliente+endpointCliente)
-                .then().statusCode(201);
+        .when()
+                .post(servicoAPI+recursoCliente)
+        .then()
+                .statusCode(HttpStatus.SC_CREATED);
 
-        // Faz o delete
+        //Aqui é o método do teste
         given()
                 .contentType(ContentType.JSON)
-                .when()
-                .delete(enderecoAPICliente+endpointCliente+clienteParaDeletar)
-                .then()
-                .statusCode(200)
-                .body(containsString(respostaDelecao));
+        .when()
+                .delete(servicoAPI+recursoCliente+"/"+clienteParaCadastrar.getId())
+        .then()
+                .statusCode(HttpStatus.SC_OK)
+                .assertThat().body(not(contains("Tio Patinhas")));
+
+
     }
 
+
+    public void apagaTodosClientesDoServidor(){
+        String respostaEsperada = "{}";
+        given()
+                .contentType(ContentType.JSON)
+        .when()
+                .delete(servicoAPI+recursoCliente+apagaTodos)
+        .then()
+                .statusCode(HttpStatus.SC_OK)
+                .assertThat().body(new IsEqual<>(respostaEsperada));
+
+    }
 }
