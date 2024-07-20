@@ -4,8 +4,6 @@ import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.sql.ClientInfoStatus;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
